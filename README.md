@@ -15,7 +15,7 @@ Installation
 
 Simple:
 
-git clone https://github.com/patrick-othmer/go-website-clicker
+git clone https://github.com/patrick-othmer/go-proxy-clicker
 
 cd go-website-clicker
 
