@@ -1,0 +1,21 @@
+body {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	background-color: #fff;
+	color: #333;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 14px;
+	line-height: 1.42857;
+}
+
+.navbar {
+	margin-bottom: 20px;
+}
+
+#log {
+	background: white;
+	margin: 0;
+	padding: 0.5em 0.5em 0.5em 0.5em;
+	height: 250px;
+	overflow: auto;
+}

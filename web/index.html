@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="Patrick Othmer">
+		<title>Go Proxy-Clicker</title>
+		<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/static/css/main.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="container">
+			<div class="navbar navbar-default" role="navigation">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="#">GO Proxy Clicker</a>
+					</div>
+					<div class="navbar-collapse collapse">
+						<ul class="nav navbar-nav">
+							<li><a href="#" id="start"><span class="glyphicon glyphicon-play"></span> Start</a></li>
+							<li><a href="#" id="stop"><span class="glyphicon glyphicon-stop"></span> Stop</a></a></li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="jumbotron">
+				<h2>Log</h2>
+				<table class="table" id="resultTable" style="display: none">
+					<thead>
+						<tr>
+							<th>Proxie</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody id="log">
+
+					</tbody>
+				</table>
+				<div id="debug"></div>
+			</div>
+		</div>
+		<script src="/static/js/jquery.min.js"></script>
+		<script>
+			var conn;
+			var log = $("#log");
+
+			function appendLog(msg) {
+			    var d = log[0]
+			    var doScroll = d.scrollTop == d.scrollHeight - d.clientHeight;
+			    $(msg).appendTo(log)
+			    var table = document.getElementById("resultTable");
+			    if(table.rows.length > 10)
+			    {
+			    	table.deleteRow(1);
+			    }
+			    if (doScroll) {
+			        d.scrollTop = d.scrollHeight - d.clientHeight;
+			    }
+			}
+
+			function webSocConnect() {
+				if (window["WebSocket"]) {
+					conn = new WebSocket("ws://127.0.0.1:5000/ws");
+					conn.onopen = function() {
+						$("#debug").html("<b>Connection established.</b>");
+					}
+					conn.onclose = function(evt) {
+						$("#debug").html("<b>Connection closed.</b>");
+						webSocConnect();
+					}
+					conn.onmessage = function(evt) {
+						var res = evt.data.split("|"); 
+					    appendLog("<tr><td>" + res[0] + "</td><td>" + res[1] + "</td></tr>")
+					}
+				} else {
+					$("#debug").html("<b>Your browser does not support WebSockets.</b>");
+				}
+			}
+			$(function() {
+				$( "#start" ).click(function() {
+					$( "#resultTable" ).toggle( "fast", function() {
+						$.get( "/start", function( data ) {
+							if(data == 'OK')
+							{
+								console.log('OKAY');
+							}
+							else
+							{
+								console.log('ERROR');
+							}
+						});
+					});
+				});
+				$( "#stop" ).click(function() {
+					$( "#resultTable" ).toggle( "fast", function() {
+						$.get( "/stop", function( data ) {
+							if(data == 'OK')
+							{
+								console.log('OKAY');
+							}
+							else
+							{
+								console.log('ERROR');
+							}
+						});
+					});
+				});
+				webSocConnect();
+			});
+		</script>
+	</body>
+</html>

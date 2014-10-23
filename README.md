@@ -10,6 +10,20 @@ Description
 
 A simple website clicker/hits facker for http proxies in go (golang).
 
+A webfrontend is available @ 127.0.0.1:5000
+
+Screenshot:
+
+![Screenshot](/Screenshot.png?raw=true "Screenshot")
+
+Libs/Software:
+
+Twitter Bootstrap
+
+jQuery
+
+WebSocket example from Gary Burd (github.com/garyburd/websocket-example)
+
 Installation
 ============
 
